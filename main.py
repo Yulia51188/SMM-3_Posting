@@ -8,3 +8,7 @@ def main():
     group_id = os.getenv("GROUP_ID")
     album_id = os.getenv("ALBUM_ID")
     print(album_id)
+
+
+if __name__=='__main__':
+	main()

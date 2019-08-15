@@ -1,4 +1,3 @@
-import os
 import vk_api
 
 

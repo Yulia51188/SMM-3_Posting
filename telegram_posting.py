@@ -18,7 +18,8 @@ def post_text_to_telegram(bot, chat_id, message):
     try:
         bot.send_message(chat_id=chat_id, text=message)
     except NetworkError as error:       
-        return(f"Error occured, text can't be posted in Telegram: {error}")  
+        return("Error occured, text can't be posted in Telegram due to " 
+            f"network connection errors:\n{error}")  
     except TimedOut as error:
         sleep(30)
         bot.send_message(chat_id=chat_id, text=message)
@@ -30,7 +31,9 @@ def post_image_to_telegram(bot, chat_id, image_path):
     try:
         bot.send_photo(chat_id=chat_id, photo=open(image_path, 'rb'))
     except NetworkError as error:
-        return(f"Error occured, image can't be posted in Telegram: {error}")  
+        return("Error occured, image can't be posted in Telegram due to " 
+            f"network connection errors:\n{error}")  
+
     except TimedOut as error:
         sleep(30)
         bot.send_photo(chat_id=chat_id, photo=open(image_path, 'rb'))

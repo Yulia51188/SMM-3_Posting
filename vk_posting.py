@@ -1,43 +1,24 @@
 import vk_api
-from requests.exceptions import ConnectionError
-import os
 
 
-def post_to_vk(vk_token, album_id, group_id,  message='', image_path=None):
+def post_to_vk(vk_token, album_id, group_id, image_path=None, message=''):
     vk_session = vk_api.VkApi(token=vk_token)
-    vk = vk_session.get_api()      
-    attachments = get_attachments(vk_session, album_id, group_id, image_path)
-    if not attachments:
-        yield "Photo can't be uploaded to VK server"
-    yield post_message_to_vk(vk, group_id, message, attachments)
-
-
-def get_attachments(vk_session, album_id, group_id, image_path):
-    if not image_path or not os.path.isfile(image_path):
-        return
-    try:
-        upload = vk_api.VkUpload(vk_session)
+    vk = vk_session.get_api()
+    upload = vk_api.VkUpload(vk_session)
+    if image_path:
         photo = upload.photo(  
             image_path,
             album_id=album_id,
             group_id=group_id
         )
-        if not 'id' in photo[0]:
-            return 
-        return f"photo{photo[0]['owner_id']}_{photo[0]['id']}"
-    except ConnectionError as error:
-        return
-
-
-def post_message_to_vk(vk_obj, group_id, message, attachments=None):
-    try:
-        vk_obj.wall.post(
+        vk_photo_url = f"https://vk.com/photo{photo[0]['owner_id']}_{photo[0]['id']}"
+        return vk.wall.post(
             owner_id=f'-{group_id}', 
             message=message, 
-            attachments=attachments,
+            attachments=f"photo{photo[0]['owner_id']}_{photo[0]['id']}"
         )
-    except ConnectionError as error:
-        return("Error occured, text can't be posted in VK due to "
-            f"network connection errors: \n{error}")  
-
+    return vk.wall.post(
+        owner_id=f'-{group_id}', 
+        message=message, 
+    )
     

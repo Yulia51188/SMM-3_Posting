@@ -28,7 +28,7 @@ def post_to_vk(vk_token, album_id, group_id, message='', image_path=None,):
             f" to VK server:\n{error}")
     try:
         response = post_message_to_vk(vk, group_id, message, attachments)
-        if not "post_id" in response:
+        if not "post_id" in response.keys():
             raise VKPostingError("Error occured while posting in VK:"
                 f"{response}")
     except ConnectionError as error:

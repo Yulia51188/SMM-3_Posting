@@ -10,7 +10,7 @@ def post_to_telegram(bot_token, chat_id, message='', image_path=None):
         bot = telegram.Bot(token=bot_token)
     except InvalidToken as error:
         return(f"Error occured, message can't be posted in Telegram: {error}") 
-    yield post_text_to_telegram(bot, 2394878, message) 
+    yield post_text_to_telegram(bot, chat_id, message) 
     yield post_image_to_telegram(bot, chat_id, image_path)
 
 

@@ -8,12 +8,6 @@ class FBPostingError(Exception):
 
 
 def post_to_fb(token, group_id, message='', image_path=None ):
-    if not os.path.isfile(image_path):
-        raise FBPostingError("Image file doesn't exist") 
-    try:
-        image_obj = open(image_path,'rb')
-    except(OSError, IOError) as error:
-        raise FBPostingError("Can't read image file")  
     try:
         response = post_photo_and_text_to_fb(token, group_id, message, image_obj)
     except ConnectionError as error:

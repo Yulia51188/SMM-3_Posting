@@ -3,25 +3,49 @@ from dotenv import load_dotenv
 import vk_posting
 import telegram_posting
 import fb_posting
+import argparse
+
+
+def parse_arguments():
+    parser = argparse.ArgumentParser(
+        description='The script publishes post with image to social media'
+    )
+    parser.add_argument(
+        'text_file_path',
+        type=str,
+        help='File path of a text file'
+    )    
+    parser.add_argument(
+        'image_file_path',
+        type=str,
+        help='File path of an image file'
+    )         
+    return parser.parse_args()
 
 
 def validate_file(file_path):
     if not os.path.isfile(file_path):
-        return (False, "Image file doesn't exists")
+        return (False, "file doesn't exists")
     try:
         file_obj = open(file_path,'rb')
         file_obj.close()
         return (True, None)
     except(OSError, IOError) as error:
-        return (False, "Image file can't be open")   
+        return (False, "file can't be open")   
 
 
-def post_in_socials(message, image_path, vk_token, vk_group_id, vk_album_id, 
+def post_in_socials(text_path, image_path, vk_token, vk_group_id, vk_album_id, 
     telegram_bot_token, telegram_chat_id, fb_app_token, fb_group_id):
     is_image, image_file_error = validate_file(image_path) 
     if not is_image:
-        yield image_file_error
+        yield f"Image {image_file_error}"
         return
+    is_text, text_file_error = validate_file(text_path) 
+    if not is_text:
+        yield f"Text {text_file_error}"
+        return
+    with open(text_path) as file:
+        message = file.read()
     try:
         telegram_posting.post_to_telegram(
             telegram_bot_token, 
@@ -56,6 +80,7 @@ def post_in_socials(message, image_path, vk_token, vk_group_id, vk_album_id,
 
 
 def main():
+    args = parse_arguments()
     load_dotenv()
     vk_token = os.getenv("ACCESS_TOKEN")
     group_id = os.getenv("GROUP_ID")
@@ -66,8 +91,8 @@ def main():
     fb_group_id = os.getenv("FB_GROUP_ID")
     message = "Good morning, Devman"
     post_results = list(post_in_socials(
-        "Good day, Devman",
-        "rocket.jpg",
+        args.text_file_path,
+        args.image_file_path,
         vk_token,
         group_id, 
         album_id,

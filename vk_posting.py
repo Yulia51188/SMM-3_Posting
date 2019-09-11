@@ -4,6 +4,7 @@ import os
 
 
 def post_to_vk(vk_token, album_id, group_id, message='', image_path=None,):
+    vk_session = vk_api.VkApi(token=vk_token)
     vk = vk_session.get_api()      
     attachments = get_attachments(vk_session, album_id, group_id, image_path)
     if not attachments:

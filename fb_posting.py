@@ -7,21 +7,28 @@ class FBPostingError(Exception):
     pass
 
 
-def post_to_fb(token, group_id, message, image_obj):
+def post_to_fb(token, group_id, message, image_path):
     try:
-        response = post_photo_and_text_to_fb(token, group_id, message, image_obj)
+        response = post_photo_and_text_to_fb(
+            token, 
+            group_id, 
+            message, 
+            image_path
+        )
     except ConnectionError as error:
-        raise FBPostingError(f"Network error occured while posting in FB:\n{error}")
+        raise FBPostingError("Network error occured while posting in FB:\n"
+            f"{error}")
     if not response.ok or 'id' not in response.json().keys():
-        raise FBPostingError(f"Error occured, post can't be published in FB:\n{response.json()}")
+        raise FBPostingError("Error occured, post can't be published in FB:\n"
+            f"{response.json()}")
     
 
-def post_photo_and_text_to_fb(token, group_id, message, image_obj):
+def post_photo_and_text_to_fb(token, group_id, message, image_path):
     url_photo_template = 'https://graph.facebook.com/{page_id}/photos'
     response = requests.post(
         url_photo_template.format(page_id = group_id),
         files = {
-            'files': image_obj
+            'files': open(image_path,'rb')
         },
         data = {
             'caption': message,

@@ -2,6 +2,57 @@ import os
 from dotenv import load_dotenv
 import vk_posting
 import telegram_posting
+import fb_posting
+
+
+def validate_file(file_path):
+    if not os.path.isfile(file_path):
+        return (False, "Image file doesn't exists")
+    try:
+        file_obj = open(file_path,'rb')
+        file_obj.close()
+        return (True, None)
+    except(OSError, IOError) as error:
+        return (False, "Image file can't be open")   
+
+
+def post_in_socials(message, image_path, vk_token, vk_group_id, vk_album_id, 
+    telegram_bot_token, telegram_chat_id, fb_app_token, fb_group_id):
+    is_image, image_file_error = validate_file(image_path) 
+    if not is_image:
+        yield image_file_error
+        return
+    try:
+        telegram_posting.post_to_telegram(
+            telegram_bot_token, 
+            telegram_chat_id,              
+            message,
+            image_path
+        ) 
+        yield "Post is published in Telegram."  
+    except telegram_posting.TelegramPostingError as error:
+        yield error 
+    try:
+        fb_posting.post_to_fb(
+            fb_app_token, 
+            fb_group_id, 
+            message,
+            image_path
+        ) 
+        yield "Post is published in FB."  
+    except fb_posting.FBPostingError as error:
+        yield error
+    try:
+        vk_posting.post_to_vk(
+            vk_token, 
+            vk_album_id,
+            vk_group_id,              
+            message,
+            image_path
+        ) 
+        yield "Post is published in VK."  
+    except vk_posting.VKPostingError as error:
+        yield error  
 
 
 def main():
@@ -9,26 +60,24 @@ def main():
     vk_token = os.getenv("ACCESS_TOKEN")
     group_id = os.getenv("GROUP_ID")
     album_id = os.getenv("ALBUM_ID")
-    print(vk_posting.post_to_vk(
-      vk_token, 
-      album_id, 
-      group_id, 
-      'rabbit.png', 
-      'New message'
-    ))
     bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
     chat_id = os.getenv("CHANNEL_ID")
-    telegram_post_result = list(telegram_posting.post_to_telegram(
+    fb_app_token = os.getenv("FB_APP_TOKEN")
+    fb_group_id = os.getenv("FB_GROUP_ID")
+    message = "Good morning, Devman"
+    post_results = list(post_in_socials(
+        "Good day, Devman",
+        "rocket.jpg",
+        vk_token,
+        group_id, 
+        album_id,
         bot_token, 
         chat_id, 
-        'New message',
-        'rabbit.png'
+        fb_app_token, 
+        fb_group_id
     ))
-    if not any(telegram_post_result):
-        print('Text and image are posted in Telegram')
-    else:
-        for error_text in telegram_post_result:
-            if error_text: print(error_text)
+    for result in post_results:
+        print(result)
 
 
 if __name__=='__main__':

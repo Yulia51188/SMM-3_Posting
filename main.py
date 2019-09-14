@@ -89,7 +89,6 @@ def main():
     telegram_chat_id = os.getenv("TELEGRAM_CHANNEL_ID")
     fb_app_token = os.getenv("FB_APP_TOKEN")
     fb_group_id = os.getenv("FB_GROUP_ID")
-    message = "Good morning, Devman"
     post_results = list(post_in_socials(
         args.text_file_path,
         args.image_file_path,

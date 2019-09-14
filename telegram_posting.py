@@ -10,14 +10,14 @@ class TelegramPostingError(Exception):
 def post_to_telegram(bot_token, chat_id, message, image_path):
     try:
         bot = telegram.Bot(token=bot_token)
-        response = post_text_to_telegram(bot, chat_id, message) 
-        if not response.message_id:
-            raise TelegramPostingError("Error occured while posting of text:"
-                f"\n{response}")
         response = post_image_to_telegram(bot, chat_id, image_path)
         if not response.message_id:
             raise TelegramPostingError("Error occured while posting of image:"
                 f"\n{response}")        
+        response = post_text_to_telegram(bot, chat_id, message) 
+        if not response.message_id:
+            raise TelegramPostingError("Error occured while posting of text:"
+                f"\n{response}")
     except InvalidToken as error:
         raise TelegramPostingError("Error occured while authentification "
             f"in Telegram: {error}") 

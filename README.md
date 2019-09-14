@@ -3,8 +3,8 @@ A script posts text with image in different media: Telegram, VK, FB.
 
 # How to install
 The script uses enviroment file with Instagram authorization data. The file '.env' must include following data:
-- VK [group id](http://regvk.com/id/) "GROUP_ID", album id "ALBUM_ID" and [token](https://vk.com/dev/implicit_flow_user) "ACCESS_TOKEN" with following permissions: photos, groups, wall and offline. 
-- Telegram Bot [token](https://smmplanner.com/blog/otlozhennyj-posting-v-telegram/) "TELEGRAM_BOT_TOKEN" and channel id "CHANNEL_ID".
+- VK [group id](http://regvk.com/id/) "VK_GROUP_ID", album id "VK_ALBUM_ID" and [token](https://vk.com/dev/implicit_flow_user) "VK_ACCESS_TOKEN" with following permissions: photos, groups, wall and offline. 
+- Telegram Bot [token](https://smmplanner.com/blog/otlozhennyj-posting-v-telegram/) "TELEGRAM_BOT_TOKEN" and channel id "TELEGRAM_CHANNEL_ID".
 - FaceBook application [marker](https://developers.facebook.com/tools/explorer/) "FB_APP_TOKEN" and group id "FB_GROUP_ID"
 
 Python3 should be already installed. Then use pip3 (or pip) to install dependencies:

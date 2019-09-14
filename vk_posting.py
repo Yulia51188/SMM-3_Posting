@@ -45,8 +45,9 @@ def get_attachments(vk_session, album_id, group_id, image_path):
     )
     if not 'id' in photo_upload_result[0]: 
         return (True, photo_upload_result)
-    return (False, f"photo{photo_upload_result[0]['owner_id']}_"
-        f"{photo_upload_result[0]['id']}")
+    owner_id = photo_upload_result[0]['owner_id']
+    photo_id = photo_upload_result[0]['id']
+    return (False, f"photo{owner_id}_{photo_id}")
 
 
 def post_message_to_vk(vk_obj, group_id, message, attachments=None):

@@ -41,6 +41,3 @@ def post_image_to_telegram(bot, chat_id, image_path):
         sleep(30)
         return bot.send_photo(chat_id=chat_id, photo=open(image_path,'rb'))
 
-
-if __name__=='__main__':
-    main()

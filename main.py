@@ -82,11 +82,11 @@ def post_in_socials(text_path, image_path, vk_token, vk_group_id, vk_album_id,
 def main():
     args = parse_arguments()
     load_dotenv()
-    vk_token = os.getenv("ACCESS_TOKEN")
-    group_id = os.getenv("GROUP_ID")
-    album_id = os.getenv("ALBUM_ID")
-    bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
-    chat_id = os.getenv("CHANNEL_ID")
+    vk_token = os.getenv("VK_ACCESS_TOKEN")
+    vk_group_id = os.getenv("VK_GROUP_ID")
+    vk_album_id = os.getenv("VK_ALBUM_ID")
+    telegram_bot_token = os.getenv("TELEGRAM_BOT_TOKEN")
+    telegram_chat_id = os.getenv("TELEGRAM_CHANNEL_ID")
     fb_app_token = os.getenv("FB_APP_TOKEN")
     fb_group_id = os.getenv("FB_GROUP_ID")
     message = "Good morning, Devman"
@@ -94,10 +94,10 @@ def main():
         args.text_file_path,
         args.image_file_path,
         vk_token,
-        group_id, 
-        album_id,
-        bot_token, 
-        chat_id, 
+        vk_group_id, 
+        vk_album_id,
+        telegram_bot_token, 
+        telegram_chat_id, 
         fb_app_token, 
         fb_group_id
     ))

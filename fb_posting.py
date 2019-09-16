@@ -25,14 +25,15 @@ def post_to_fb(token, group_id, message, image_path):
 
 def post_photo_and_text_to_fb(token, group_id, message, image_path):
     url_photo_template = 'https://graph.facebook.com/{page_id}/photos'
-    response = requests.post(
-        url_photo_template.format(page_id = group_id),
-        files = {
-            'files': open(image_path,'rb')
-        },
-        data = {
-            'caption': message,
-            'access_token': token
-        }
-    )
+    with open(image_path,'rb') as image_file:
+        response = requests.post(
+            url_photo_template.format(page_id = group_id),
+            files = {
+                'files': image_file,
+            },
+            data = {
+                'caption': message,
+                'access_token': token
+            }
+        )
     return response

@@ -35,9 +35,10 @@ def post_text_to_telegram(bot, chat_id, message):
 
 
 def post_image_to_telegram(bot, chat_id, image_path):
-    try:
-        return bot.send_photo(chat_id=chat_id, photo=open(image_path,'rb'))     
-    except TimedOut as error:
-        sleep(30)
-        return bot.send_photo(chat_id=chat_id, photo=open(image_path,'rb'))
+    with open(image_path,'rb') as image_file:
+        try:
+            return bot.send_photo(chat_id=chat_id, photo=image_file)     
+        except TimedOut as error:
+            sleep(30)
+            return bot.send_photo(chat_id=chat_id, photo=image_file)
 

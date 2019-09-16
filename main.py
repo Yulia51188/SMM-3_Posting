@@ -4,6 +4,7 @@ import vk_posting
 import telegram_posting
 import fb_posting
 import argparse
+from requests.exceptions import ConnectionError
 
 
 def parse_arguments():
@@ -54,6 +55,8 @@ def post_in_socials(text_path, image_path, vk_token, vk_group_id, vk_album_id,
             image_path
         ) 
         yield "Post is published in Telegram."  
+    except ConnectionError as error:
+        yield f"TelegramPosting error: {error}"
     except telegram_posting.TelegramPostingError as error:
         yield error 
     try:
@@ -64,6 +67,8 @@ def post_in_socials(text_path, image_path, vk_token, vk_group_id, vk_album_id,
             image_path
         ) 
         yield "Post is published in FB."  
+    except ConnectionError as error:
+        yield f"FBPosting error: {error}"
     except fb_posting.FBPostingError as error:
         yield error
     try:
@@ -75,6 +80,8 @@ def post_in_socials(text_path, image_path, vk_token, vk_group_id, vk_album_id,
             image_path
         ) 
         yield "Post is published in VK."  
+    except ConnectionError as error:
+        yield f"VKPosting error: {error}"
     except vk_posting.VKPostingError as error:
         yield error  
 

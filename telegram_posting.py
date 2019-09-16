@@ -22,7 +22,7 @@ def post_to_telegram(bot_token, chat_id, message, image_path):
         raise TelegramPostingError("Error occured while authentification "
             f"in Telegram: {error}") 
     except NetworkError as error:
-        raise TelegramPostingError("Network error while posting in Telegram:"
+        raise TelegramPostingError("Error occured while posting in Telegram:"
             f"\n{error}")
 
 

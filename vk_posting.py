@@ -20,20 +20,13 @@ def post_to_vk(vk_token, album_id, group_id, message='', image_path=None,):
         if photo_upload_error:
             raise VKPostingError("Can't upload photo to VK server:\n"
                 f"{photo_upload_error}")
-    except ConnectionError as error:
-        raise VKPostingError("Network error occured while uploading photo"
-            f" to VK server:\n{error}")
     except vk_api.exceptions.ApiError as error:
         raise VKPostingError("VK Api Error occured while uploading photo"
             f" to VK server:\n{error}")
-    try:
-        response = post_message_to_vk(vk, group_id, message, attachments)
-        if not "post_id" in response.keys():
-            raise VKPostingError("Error occured while posting in VK:"
+    response = post_message_to_vk(vk, group_id, message, attachments)
+    if not "post_id" in response.keys():
+        raise VKPostingError("Error occured while posting in VK:"
                 f"{response}")
-    except ConnectionError as error:
-        raise VKPostingError(f"Network error occured while posting to the "
-            "wall:\n{error}")
 
 
 def get_attachments(vk_session, album_id, group_id, image_path):

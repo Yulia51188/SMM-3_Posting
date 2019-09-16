@@ -31,7 +31,7 @@ def validate_file(file_path):
         file_obj.close()
         return (True, None)
     except(OSError, IOError) as error:
-        return (False, "file can't be open")   
+        return (False, "File can't be open")   
 
 
 def post_in_socials(text_path, image_path, vk_token, vk_group_id, vk_album_id, 
